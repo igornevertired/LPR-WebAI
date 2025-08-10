@@ -43,11 +43,42 @@ def count_foreign_syms(regno):
             i += 1
 
 def str_to_list(s):
-    if s != '[]':
-        s = s[1:-1].split(',')
-        return [float(i) for i in s]
-    else:
-        return [0]
+    """Преобразует строку в список чисел с валидацией"""
+    try:
+        if not s or s == '[]':
+            return [0.0]
+        
+        # Если строка уже является списком
+        if isinstance(s, list):
+            return [float(i) for i in s]
+        
+        # Убираем квадратные скобки и разделяем по запятой
+        if s.startswith('[') and s.endswith(']'):
+            s = s[1:-1]
+        
+        # Разделяем по запятой и убираем пробелы
+        parts = [part.strip() for part in s.split(',')]
+        
+        # Фильтруем пустые строки и преобразуем в float
+        result = []
+        for part in parts:
+            if part:  # Пропускаем пустые строки
+                try:
+                    result.append(float(part))
+                except ValueError:
+                    # Если не удается преобразовать в float, используем 0
+                    result.append(0.0)
+        
+        # Если список пустой, возвращаем [0]
+        if not result:
+            return [0.0]
+            
+        return result
+        
+    except Exception as e:
+        # В случае любой ошибки возвращаем [0]
+        print(f"Warning: Error parsing scores string '{s}': {e}. Using default value [0.0]")
+        return [0.0]
 
 def pick_regno(camera_regno, nn_regno, camera_score, nn_score, nn_sym_scores, nn_len_scores, camera_type, camera_class, 
          time_check, direction, model_name):
