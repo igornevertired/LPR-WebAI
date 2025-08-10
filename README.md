@@ -90,9 +90,6 @@
 ```bash
 # Установка Poetry (если не установлен)
 pip install poetry
-
-# Установка зависимостей проекта
-poetry install
 ```
 
 ### Запуск сервиса
@@ -100,6 +97,9 @@ poetry install
 ```bash
 # Активация виртуального окружения
 poetry shell
+
+# Установка зависимостей проекта
+poetry install --sync
 
 # Запуск сервиса
 python src/main.py
